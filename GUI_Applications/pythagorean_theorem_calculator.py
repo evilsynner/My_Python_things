@@ -1,9 +1,13 @@
 # BLOCK Requirements #
 #   customtkinter
+#   Pillow
 # ENDBLOCK Requirements #
 
 import tkinter as tk
+from tkinter import ttk
 import customtkinter as ctk
+from PIL import Image, ImageTk
+from pathlib import Path
 
 class GradientFrame(tk.Canvas):
     """
@@ -40,19 +44,20 @@ class GradientFrame(tk.Canvas):
             self.create_line(i,0,i,height, tags=("gradient",), fill=color)
         self.lower("gradient")
 
-
-
 class App(ctk.CTk):
     def __init__(self):
         """
             Load all the application
         """
+
         super().__init__(fg_color="#ffffff")
 
         self.center_window(win=self, wth=600, hht=500)
 
-        main: tk.Canvas = GradientFrame(parent=self, color1="#0004ff", color2="#ff7300")
-        main.pack(fill="both", expand=True)
+        self.main: tk.Canvas = GradientFrame(parent=self, color1="#0004ff", color2="#ff7300")
+        self.main.pack(fill="both", expand=True)
+
+        self.main_widgets()
     
     def center_window(self, win: ctk.CTk | ctk.CTkToplevel,
         wth: int, hht: int):
@@ -72,6 +77,41 @@ class App(ctk.CTk):
         y: int = (scrn_h // 3) - (wh // 2)
 
         win.geometry(f"{wth}x{hht}+{x}+{y}")
+
+    def main_widgets(self) -> None:
+        label_title: ctk.CTkLabel = ctk.CTkLabel(
+            master=self.main,
+            corner_radius=5,
+            bg_color="#fff785",
+            fg_color="#fff785",
+            text_color="#1b1b4c",
+            font=("Arial", 14),
+            text="Pythagorean Theorem Calculator"
+        )
+        label_title.pack(anchor="n", fill="both", padx=15, pady=10)
+
+        sep: ttk.Separator = ttk.Separator(master=self.main,
+            orient="horizontal")
+        sep.pack(anchor="n", fill="both", padx=15, pady=5)
+
+        ip: Path = Path(__file__).parent / "img" \
+            / "triangle-rectangle.png"
+        file: ctk.CTkImage = ctk.CTkImage(
+            light_image=Image.open(fp=str(ip), formats=("png",)),
+            dark_image=Image.open(fp=str(ip), formats=("png",)),
+            size=(220, 220)
+        )
+
+        img: ctk.CTkLabel = ctk.CTkLabel(
+            master=self.main,
+            corner_radius=0,
+            bg_color="transparent",
+            text="",
+            image=file,
+            compound="center",
+            anchor="center"
+        )
+        img.pack(anchor="n", fill="both", padx=15, pady=5)
 
 if __name__ == "__main__":
     app: App = App()
