@@ -113,6 +113,11 @@ class App(ctk.CTk):
         )
         img.pack(anchor="n", fill="both", padx=15, pady=5)
 
+        a = ctk.CTkEntry(
+            master=self.main
+        )
+        a.pack(anchor="n", pady=5)
+
 if __name__ == "__main__":
     app: App = App()
     app.mainloop()
