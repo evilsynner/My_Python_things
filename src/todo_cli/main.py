@@ -1,2 +1,4 @@
+from core.controller import TodoAppController
+
 if __name__ == "__main__":
     print("Testing")
